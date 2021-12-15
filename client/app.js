@@ -12,11 +12,15 @@ const elements = {
 elements.loginForm.addEventListener('submit', event => login(event));
 elements.addMessageForm.addEventListener('submit', event => sendMessage(event));
 
+const socket = io();
+socket.on('message', ({ author, content }) => addMessage(author, content));
 
-function login(event) {
-    event.preventDefault();
+
+function login(e) {
+    e.preventDefault();
     if(elements.userNameInput.value) {
         userName = elements.userNameInput.value;
+        socket.emit('join', userName);
         elements.loginForm.classList.remove('show');
         elements.messagesSection.classList.add('show');        
     } else {
@@ -24,15 +28,18 @@ function login(event) {
     }
 };
 
-function sendMessage(event) {
-    event.preventDefault();
-    if (elements.messageContentInput.value) {
-        addMessage(userName, elements.messageContentInput.value);
-        elements.messageContentInput.value = '';
-    } else {
-        window.alert('You have to type your message')
+function sendMessage(e) {
+    e.preventDefault();  
+    let messageContent = elements.messageContentInput.value;  
+    if(!messageContent.length) {
+      alert('You have to type something!');
     }
-};
+    else {
+      addMessage(userName, messageContent);
+      socket.emit('message', { author: userName, content: messageContent })
+      elements.messageContentInput.value = '';
+    }
+}
 
 function addMessage(author, content) {
     const message = document.createElement('li');
