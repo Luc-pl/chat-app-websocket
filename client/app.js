@@ -1,14 +1,16 @@
 let userName;
 
 const elements = { 
-    loginForm = document.getElementById('welcome-form'),
-    messagesSection = document.getElementById('messages-section'),
-    messagesList = document.getElementById('messages-list'),
-    addMessageForm = document.getElementById('add-messages-form'),
-    userNameInput = document.getElementById('username'),
-    messageContentInput = document.getElementById('message-content'),
+    loginForm: document.getElementById('welcome-form'),
+    messagesSection: document.getElementById('messages-section'),
+    messagesList: document.getElementById('messages-list'),
+    addMessageForm: document.getElementById('add-messages-form'),
+    userNameInput: document.getElementById('username'),
+    messageContentInput: document.getElementById('message-content'),
 };
 
+elements.loginForm.addEventListener('submit', event => login(event));
+elements.addMessageForm.addEventListener('submit', event => sendMessage(event));
 
 
 function login(event) {
@@ -16,7 +18,7 @@ function login(event) {
     if(elements.userNameInput.value) {
         userName = elements.userNameInput.value;
         elements.loginForm.classList.remove('show');
-        elements.messagesSection.classList.add('show');
+        elements.messagesSection.classList.add('show');        
     } else {
         window.alert('Please write your username');
     }
@@ -45,9 +47,6 @@ function addMessage(author, content) {
     `;
     elements.messagesList.appendChild(message);
 }
-
-elements.loginForm.addEventListener('submit', event => login(event));
-elements.addEventListener('submit', event => sendMessage(event));
 
 
 
